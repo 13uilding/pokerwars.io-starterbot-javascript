@@ -1,5 +1,29 @@
 'use strict';
 
+var possibleCombinations_pre = 52 * 51;
+var possibleCombinations_flop = 52 * 51 * 50 * 49 * 48;
+var possibleCombinations_pre = 52 * 51 * 50 * 49 * 48 * 47;
+var possibleCombinations_pre = 52 * 51 * 50 * 49 * 48 * 46 * 45;
+
+var possibleHands = 52 * 51 * 50 * 49 * 48 * 46 * 45; // 2,598,960
+var tier_1 = 40; // Straight flush: Starting card (A-T)
+var tier_2 = 624; // Four-of-a-kind 13 * 48
+// 52 combinations of three of a kind: 13(A-K) * 4(hsc, hsd, hcd, scd) then multiply by combinations of pairs 
+// 72 combinations of two of a kind: 12(A-K excluding three of kind value) * 6(hs, hc, hd, sc, sd, cd)
+var tier_3 = 3744; // Full-House
+var tier_4 = 5108; // Flush: 4 suits * (13!/8!*5!) - straight flush 
+var tier_5 = 10240; // Straight: 4^5 * 10 - straight flush
+// Just subtract full-house from it?
+var tier_6 = 54912;// Three-of-a-kind 13(A-K) * 4 * (48!)/(2!*46!) - tier_3
+// Two pair: Borrowing from the full-house: Possible combinations of two of a kind:
+// They got 123,552
+// 13C2 4C2 4C2 44
+var tier_7 = 123552; // Two pair: 13(A-K) * 6 * 12(A-K) * 6 * 44 (remaining cards in the deck) / 2 because order of pairs don't matter
+// Just subtract full-house and two pair from it?
+var tier_8 = 1098240;// Pair: 13(A-K) * 6 * (48!/3!*45!) - tier_3 - tier_7
+// They got 1,302,540
+var tier_9 = 1302540;// (52!)/(47!*5!) - all the other tiers 2598960-1098240-123552-54912-10200-5108-3744-624-40 
+
 exports.play = function(req, res) {
   // This endpoint is called by pokerwars.io to request your bot next move on a tournament.
   // You have the current state of the table in the GameInfo object, which you can use to decide
